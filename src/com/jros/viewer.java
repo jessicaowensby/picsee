@@ -1,17 +1,13 @@
 package com.jros;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -19,11 +15,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
+import android.widget.Toast;
 import android.widget.Gallery.LayoutParams;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
-
 
 public class viewer extends Activity implements
         AdapterView.OnItemSelectedListener, ViewSwitcher.ViewFactory {
@@ -60,17 +56,26 @@ public class viewer extends Activity implements
 		stopService(null);
 	}
 
-    public void onItemSelected(AdapterView parent, View v, int position, long id) {
+    @SuppressWarnings({ "unchecked", "static-access" })
+	public void onItemSelected(AdapterView parent, View v, int position, long id) {
     	mSwitcher.setImageDrawable(d.drawables[position]);
     }
 
-    public void onNothingSelected(AdapterView parent) {
+    @SuppressWarnings("unchecked")
+	public void onNothingSelected(AdapterView parent) {
     }
+    
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		new MenuInflater(getApplication()).inflate(R.menu.option, menu);
+
+		return(super.onCreateOptionsMenu(menu));
+	}
 
     public View makeView() {
-        ImageView i = new ImageView(this);
+        MyView i = new MyView(this);
         i.setBackgroundColor(0xFF000000);
-        i.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        i.setScaleType(MyView.ScaleType.FIT_CENTER);
         i.setLayoutParams(new ImageSwitcher.LayoutParams(LayoutParams.FILL_PARENT,
                 LayoutParams.FILL_PARENT));
         return i;
@@ -83,7 +88,8 @@ public class viewer extends Activity implements
             mContext = c;
         }
 
-        public int getCount() {
+        @SuppressWarnings("static-access")
+		public int getCount() {
             return d.drawables.length;
         }
 
@@ -95,10 +101,12 @@ public class viewer extends Activity implements
             return position;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView i = new ImageView(mContext);
+        @SuppressWarnings("static-access")
+		public View getView(int position, View convertView, ViewGroup parent) {
+            MyView i = new MyView(mContext);
     		Log.i(LOGID, "position in drawables: " + position);
     		i.setImageDrawable(d.drawables[position]);
+    		Log.i(LOGID, "d.drawables[position]" + d.drawables[position]);
             i.setAdjustViewBounds(true);
             i.setLayoutParams(new Gallery.LayoutParams(
                     LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -125,7 +133,8 @@ public class viewer extends Activity implements
 			Log.i(LOGID, "onKeyDown");
 			switch(keyCode) {
 			case KeyEvent.KEYCODE_DPAD_UP:
-				String message1 = "Key Up!";
+				String message = "Key Up!";
+				Toast.makeText(this.getContext(), "key up", Toast.LENGTH_SHORT);
 				//Toast.makeText(this,"No location available",Toast.LENGTH_SHORT).show();
 				Log.i(LOGID, message);                        
 				break;
