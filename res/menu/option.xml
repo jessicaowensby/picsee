@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/userId"
+		android:title="Enter User Id"
+		android:icon="@android:drawable/ic_menu_delete"
+	/>
+	<item android:id="@+id/password"
+	 android:title="Password" 
+    android:icon="@android:drawable/ic_menu_preferences" 
+  /> 
+</menu>
